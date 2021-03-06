@@ -11,7 +11,6 @@
     /** COMPILER OPTIONS **/
     /* Basic Options */
     "isolatedModules": true,
-    "jsx": "preserve",
     "lib": [
       "es6",
       "dom",
@@ -25,10 +24,9 @@
     ],
     "declaration": true,
     "outDir": "./lib",
-    "module": "esnext",
-    "target": "esnext",
-    "allowJs": true,
-    "checkJs": true,
+    "module": "commonjs",
+    "target": "es5",
+    "allowJs": false,
     /**/
     /* Strict Checks */
     "strict": true,
