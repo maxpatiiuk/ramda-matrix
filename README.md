@@ -6,5 +6,6 @@ Documentation is located in `src/index.ts`
 
 ## Features
 * Strongly-typed (TypeScript)
-* Almost purely functional
+* Purely functional
+* Every function is curried
 * Tiny bundle size
