@@ -1,0 +1,53 @@
+{
+  /** ROOT FIELDS **/
+  /* File Inclusion */
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+  ],
+  "compilerOptions": {
+    /** COMPILER OPTIONS **/
+    /* Basic Options */
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": [
+      "es6",
+      "dom",
+      "dom.iterable",
+      "es2016",
+      "es2017",
+      "es2018",
+      "es2019",
+      "es2020",
+      "esnext"
+    ],
+    "declaration": true,
+    "outDir": "./lib",
+    "module": "esnext",
+    "sourceMap": true,
+    "target": "esnext",
+    "allowJs": true,
+    "checkJs": true,
+    /**/
+    /* Strict Checks */
+    "strict": true,
+    /**/
+    /* Module Resolution */
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    /**/
+    /* Linter Checks */
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    /**/
+    /* Advanced*/
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "noPropertyAccessFromIndexSignature": true
+}

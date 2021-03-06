@@ -1,0 +1,39 @@
+{
+  "name": "ramda-matrix",
+  "description": "Ramda-based library for working with matrices in JavaScript",
+  "version": "1.0.0",
+  "private": false,
+  "dependencies": {
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.27.38",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
+    "eslint": "^6.8.0",
+    "typescript": "^4.2.3"
+  },
+  "main": "src/index.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "buid": "tsc",
+    "lint": "eslint src/index.ts",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run link"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxxxxxdlp/ramda-matrixes"
+  },
+  "homepage": "https://github.com/maxxxxxdlp/TTS_King/#readme",
+  "bugs": {
+    "url": "https://github.com/maxxxxxdlp/ramda-matrix/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ramda",
+    "matrix"
+  ]
+}
