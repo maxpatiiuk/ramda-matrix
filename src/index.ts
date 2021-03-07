@@ -2,14 +2,14 @@ import R from 'ramda';
 
 
 export interface Dimensions {
-	rows: number,
-	cols: number
+  rows: number,
+  cols: number
 }
 
 
 export interface Range {
-	min: number,
-	max: number
+  min: number,
+  max: number
 }
 
 
@@ -23,19 +23,19 @@ export interface Range {
  * [[1,2,3],[-1,2,3]]
  */
 export const parse = R.compose(
-	R.map(
-		R.compose(
-			R.map(parseInt),
-			R.split(' '),
-			// strip odd characters
-			R.replace(/[^\d. -]/g, ''),
-			// remove extra whitespace
-			R.replace(/\s+/g, ' '),
-		),
-	),
-	R.split('\n'),
-	R.trim,
-	R.head,
+  R.map(
+    R.compose(
+      R.map(parseInt),
+      R.split(' '),
+      // strip odd characters
+      R.replace(/[^\d. -]/g, ''),
+      // remove extra whitespace
+      R.replace(/\s+/g, ' '),
+    ),
+  ),
+  R.split('\n'),
+  R.trim,
+  R.head,
 );
 
 
@@ -55,10 +55,10 @@ export const zip = R.zipWith<number[], number[], number[][]>(R.zip);
  * [[4,6]]
  * */
 export const sum = R.compose(
-	R.map(
-		R.map(R.sum),
-	),
-	zip,
+  R.map(
+    R.map(R.sum),
+  ),
+  zip,
 );
 
 
@@ -69,12 +69,12 @@ export const sum = R.compose(
  * [[-2,-2]]
  * */
 export const diff = R.curryN(
-	2,
-	(
-		matrix: number[][],
-		matrix2: number[][],
-	): number[][] =>
-		sum(matrix, prod(-1, matrix2)),
+  2,
+  (
+    matrix: number[][],
+    matrix2: number[][],
+  ): number[][] =>
+    sum(matrix, prod(-1, matrix2)),
 );
 
 
@@ -85,17 +85,17 @@ export const diff = R.curryN(
  * [[2,4]]
  */
 export const prod = R.curryN(
-	2,
-	(
-		value: number,
-		matrix: number[][],
-	) =>
-		R.map(
-			R.map(
-				R.multiply(value),
-			),
-			matrix,
-		),
+  2,
+  (
+    value: number,
+    matrix: number[][],
+  ) =>
+    R.map(
+      R.map(
+        R.multiply(value),
+      ),
+      matrix,
+    ),
 );
 
 
@@ -106,15 +106,15 @@ export const prod = R.curryN(
  * [1, 3]
  */
 export const col = R.curryN(
-	2,
-	(
-		col: number,
-		matrix: number[][],
-	): number[] =>
-		R.view(
-			R.lensIndex(col),
-			R.transpose(matrix),
-		),
+  2,
+  (
+    col: number,
+    matrix: number[][],
+  ): number[] =>
+    R.view(
+      R.lensIndex(col),
+      R.transpose(matrix),
+    ),
 );
 
 
@@ -134,21 +134,21 @@ export const rotate = R.map(R.head);
  * [5, 11]
  */
 export const colProd = R.curryN(
-	2,
-	(
-		col: number[],
-		matrix: number[][],
-	) =>
-		R.map((column) =>
-				R.sum(
-					R.addIndex<number, number>(R.map)(
-						(value, index) =>
-							R.multiply(value, col[index]),
-						column,
-					),
-				),
-			matrix,
-		),
+  2,
+  (
+    col: number[],
+    matrix: number[][],
+  ) =>
+    R.map((column) =>
+        R.sum(
+          R.addIndex<number, number>(R.map)(
+            (value, index) =>
+              R.multiply(value, col[index]),
+            column,
+          ),
+        ),
+      matrix,
+    ),
 );
 
 
@@ -168,17 +168,17 @@ export const transpose = R.transpose;
  * [[1,2],[2,1]]
  */
 export const multiply = R.curryN(
-	2,
-	(
-		matrix2: number[][],
-		matrix: number[][],
-	) => R.transpose(
-		R.map(
-			(column) =>
-				colProd(column)(matrix),
-			R.transpose(matrix2),
-		),
-	),
+  2,
+  (
+    matrix2: number[][],
+    matrix: number[][],
+  ) => R.transpose(
+    R.map(
+      (column) =>
+        colProd(column)(matrix),
+      R.transpose(matrix2),
+    ),
+  ),
 );
 
 
@@ -189,9 +189,9 @@ export const multiply = R.curryN(
  * -3
  */
 export const det = R.curryN(
-	1,
-	(matrix: number[][]) =>
-		matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0],
+  1,
+  (matrix: number[][]) =>
+    matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0],
 );
 
 
@@ -201,11 +201,11 @@ export const det = R.curryN(
  * [[1,-2],[-2,1]]
  */
 export const adj = R.curryN(
-	1,
-	(matrix: number[][]) => [
-		[matrix[1][1], -1 * matrix[0][1]],
-		[-1 * matrix[1][0], matrix[0][0]],
-	],
+  1,
+  (matrix: number[][]) => [
+    [matrix[1][1], -1 * matrix[0][1]],
+    [-1 * matrix[1][0], matrix[0][0]],
+  ],
 );
 
 
@@ -216,12 +216,12 @@ export const adj = R.curryN(
  * [[-3,6],[6,-3]]
  */
 export const inverse = R.curryN(
-	1,
-	(matrix: number[][]): number[][] =>
-		prod(
-			det(matrix),
-			adj(matrix),
-		),
+  1,
+  (matrix: number[][]): number[][] =>
+    prod(
+      det(matrix),
+      adj(matrix),
+    ),
 );
 
 
@@ -232,12 +232,12 @@ export const inverse = R.curryN(
  * false
  */
 export const areIdentical = R.curryN(
-	2,
-	(
-		matrix: number[][],
-		matrix2: number[][],
-	): boolean =>
-		R.eqBy(JSON.stringify, matrix, matrix2),
+  2,
+  (
+    matrix: number[][],
+    matrix2: number[][],
+  ): boolean =>
+    R.eqBy(JSON.stringify, matrix, matrix2),
 );
 
 
@@ -248,19 +248,19 @@ export const areIdentical = R.curryN(
  * [[1,2],[3,4]]
  */
 export const array2matrix = R.curryN(
-	2,
-	(
-		cols: number,
-		arr: number[],
-	): number[][] => R.addIndex<number, number[]>(R.map)(
-		(_, i) =>
-			arr.slice(i * cols, i * cols + cols),
-		Array(
-			Math.ceil(
-				R.divide(R.length(arr), cols),
-			),
-		),
-	),
+  2,
+  (
+    cols: number,
+    arr: number[],
+  ): number[][] => R.addIndex<number, number[]>(R.map)(
+    (_, i) =>
+      arr.slice(i * cols, i * cols + cols),
+    Array(
+      Math.ceil(
+        R.divide(R.length(arr), cols),
+      ),
+    ),
+  ),
 );
 
 
@@ -271,14 +271,14 @@ export const array2matrix = R.curryN(
  * [[2,2],[2,2]]
  */
 export const fill = R.curryN(
-	2,
-	(
-		size: Dimensions,
-		value: number,
-	): number[][] =>
-		Array<number[]>(size.rows).fill(
-			Array<number>(size.cols).fill(value),
-		),
+  2,
+  (
+    size: Dimensions,
+    value: number,
+  ): number[][] =>
+    Array<number[]>(size.rows).fill(
+      Array<number>(size.cols).fill(value),
+    ),
 );
 
 
@@ -289,17 +289,17 @@ export const fill = R.curryN(
  * true
  */
 export const equal = R.curryN(
-	2,
-	(
-		value: number,
-		matrix: number[][],
-	): boolean =>
-		R.all(
-			R.all(
-				R.equals(value),
-			),
-			matrix,
-		),
+  2,
+  (
+    value: number,
+    matrix: number[][],
+  ): boolean =>
+    R.all(
+      R.all(
+        R.equals(value),
+      ),
+      matrix,
+    ),
 );
 
 /*
@@ -309,13 +309,13 @@ export const equal = R.curryN(
 * true
 * */
 export const isIdentity = R.curryN(
-	1,
-	(matrix: number[][]) =>
-		matrix.every((row, rowIndex) =>
-			row.every((cell, cellIndex) =>
-				cell === Number(cellIndex === rowIndex),
-			),
-		),
+  1,
+  (matrix: number[][]) =>
+    matrix.every((row, rowIndex) =>
+      row.every((cell, cellIndex) =>
+        cell === Number(cellIndex === rowIndex),
+      ),
+    ),
 );
 
 /*
@@ -325,17 +325,17 @@ export const isIdentity = R.curryN(
 * [[1,0],[0,1]]
 * */
 export const identity = R.curryN(
-	1,
-	(size: Dimensions):(0|1)[] =>
-		R.addIndex<0, (0|1)[]>(R.map)(
-			(_, rowIndex, array) =>
-				R.set<(0|1)[], (0|1)>(
-					R.lensIndex(rowIndex),
-					1,
-					array as 0[],
-				),
-			Array(size.rows).fill(0),
-		)
+  1,
+  (size: Dimensions):(0|1)[] =>
+    R.addIndex<0, (0|1)[]>(R.map)(
+      (_, rowIndex, array) =>
+        R.set<(0|1)[], (0|1)>(
+          R.lensIndex(rowIndex),
+          1,
+          array as 0[],
+        ),
+      Array(size.rows).fill(0),
+    )
 );
 
 
@@ -346,31 +346,31 @@ export const identity = R.curryN(
  * traverse({min: 0, max: 1}, {rows: 1, cols: 2}, console.log);
  */
 export const traverse = R.curryN(
-	3,
-	(
-		range: Range,
-		size: Dimensions,
-		callback: (matrix: number[][]) => void,
-	) =>
-		traverseRecursive(range, size, callback, []),
+  3,
+  (
+    range: Range,
+    size: Dimensions,
+    callback: (matrix: number[][]) => void,
+  ) =>
+    traverseRecursive(range, size, callback, []),
 );
 
 const traverseRecursive = (
-	range: Range,
-	size: Dimensions,
-	callback: (matrix: number[][]) => void,
-	inlineMatrix: number[],
+  range: Range,
+  size: Dimensions,
+  callback: (matrix: number[][]) => void,
+  inlineMatrix: number[],
 ): void => void (
-	inlineMatrix.length === size.rows * size.cols ?
-		callback(array2matrix(size.rows, inlineMatrix)) :
-		R.addIndex<undefined, void>(R.map)(
-			(_, index) =>
-				traverseRecursive(
-					range,
-					size,
-					callback,
-					[...inlineMatrix, range.min + index],
-				),
-			Array(range.max - range.min),
-		)
+  inlineMatrix.length === size.rows * size.cols ?
+    callback(array2matrix(size.rows, inlineMatrix)) :
+    R.addIndex<undefined, void>(R.map)(
+      (_, index) =>
+        traverseRecursive(
+          range,
+          size,
+          callback,
+          [...inlineMatrix, range.min + index],
+        ),
+      Array(range.max - range.min),
+    )
 );
