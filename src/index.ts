@@ -68,7 +68,8 @@ export const sum = R.compose(
  * diff([[1,2]],[[3,4]]);
  * [[-2,-2]]
  * */
-export const diff = R.curry(
+export const diff = R.curryN(
+	2,
 	(
 		matrix: number[][],
 		matrix2: number[][],
@@ -83,7 +84,8 @@ export const diff = R.curry(
  * prod(2, [[1,2]]);
  * [[2,4]]
  */
-export const prod = R.curry(
+export const prod = R.curryN(
+	2,
 	(
 		value: number,
 		matrix: number[][],
@@ -103,7 +105,8 @@ export const prod = R.curry(
  * col(1,[[1,2],[3,4]]);
  * [1, 3]
  */
-export const col = R.curry(
+export const col = R.curryN(
+	2,
 	(
 		col: number,
 		matrix: number[][],
@@ -118,7 +121,7 @@ export const col = R.curry(
 /*
  * Turn a single column matrix into a 1d array
  *
- * rotate([[1],[2],[3]])
+ * rotate([[1],[2],[3]]);
  * [1,2,3]
  */
 export const rotate = R.map(R.head);
@@ -127,10 +130,11 @@ export const rotate = R.map(R.head);
 /*
  * Get product of multiplying a matrix by a col
  *
- * colProd([1,2],[[1,2],[3,4]])
+ * colProd([1,2],[[1,2],[3,4]]);
  * [5, 11]
  */
-export const colProd = R.curry(
+export const colProd = R.curryN(
+	2,
 	(
 		col: number[],
 		matrix: number[][],
@@ -151,7 +155,7 @@ export const colProd = R.curry(
 /*
  * Transpose a matrix
  *
- * transpose([[1,2],[3,4]])
+ * transpose([[1,2],[3,4]]);
  * [[1,3],[2,4]]
  */
 export const transpose = R.transpose;
@@ -160,10 +164,11 @@ export const transpose = R.transpose;
 /*
  * Multiply two matrices
  *
- * multiply([[1,2],[2,1]], [[0,1],[1,0])
+ * multiply([[1,2],[2,1]], [[0,1],[1,0]);
  * [[1,2],[2,1]]
  */
-export const multiply = R.curry(
+export const multiply = R.curryN(
+	2,
 	(
 		matrix2: number[][],
 		matrix: number[][],
@@ -180,65 +185,74 @@ export const multiply = R.curry(
 /*
  * Get determinant of a 2x2 matrix
  *
- * det([[1,2],[2,1]])
+ * det([[1,2],[2,1]]);
  * -3
  */
-export const det = R.curry((matrix: number[][]) =>
-	matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0],
+export const det = R.curryN(
+	1,
+	(matrix: number[][]) =>
+		matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0],
 );
 
 
 /*
  * Get adjudicate of a 2x2 matrix
- * adj([[1,2],[2,1]])
+ * adj([[1,2],[2,1]]);
  * [[1,-2],[-2,1]]
  */
-export const adj = R.curry((matrix: number[][]) => [
-	[matrix[1][1], -1 * matrix[0][1]],
-	[-1 * matrix[1][0], matrix[0][0]],
-]);
+export const adj = R.curryN(
+	1,
+	(matrix: number[][]) => [
+		[matrix[1][1], -1 * matrix[0][1]],
+		[-1 * matrix[1][0], matrix[0][0]],
+	],
+);
 
 
 /*
  * Get an inverse of a 2x2 matrix
  *
- * inverse([[1,2],[2,1]])
+ * inverse([[1,2],[2,1]]);
  * [[-3,6],[6,-3]]
  */
-export const inverse = R.curry((matrix: number[][]): number[][] =>
-	prod(
-		det(matrix),
-		adj(matrix),
-	),
+export const inverse = R.curryN(
+	1,
+	(matrix: number[][]): number[][] =>
+		prod(
+			det(matrix),
+			adj(matrix),
+		),
 );
 
 
 /*
- * Check if two matrices are equal
+ * Check if two matrices are identical
  *
- * eq([[1]],[[2]])
+ * areIdentical([[1]],[[2]]);
  * false
  */
-export const eq = R.curry(
+export const areIdentical = R.curryN(
+	2,
 	(
 		matrix: number[][],
 		matrix2: number[][],
 	): boolean =>
-		JSON.stringify(matrix) === JSON.stringify(matrix2),
+		R.eqBy(JSON.stringify, matrix, matrix2),
 );
 
 
 /*
  * Split array into a matrix of specified col length
  *
- * array2matrix(2, [1,2,3,4])
+ * array2matrix(2, [1,2,3,4]);
  * [[1,2],[3,4]]
  */
-export const array2matrix = R.curry(
+export const array2matrix = R.curryN(
+	2,
 	(
 		cols: number,
 		arr: number[],
-	): number[][] => R.addIndex(R.map)(
+	): number[][] => R.addIndex<number, number[]>(R.map)(
 		(_, i) =>
 			arr.slice(i * cols, i * cols + cols),
 		Array(
@@ -251,9 +265,13 @@ export const array2matrix = R.curry(
 
 
 /*
- * Create a {rows, cols} matrix with each cell consisting of value
+ * Create a {rows, cols} matrix where each cell is equal to value
+ *
+ * fill({rows: 2, cols: 2}, 2);
+ * [[2,2],[2,2]]
  */
-export const fill = R.curry(
+export const fill = R.curryN(
+	2,
 	(
 		size: Dimensions,
 		value: number,
@@ -267,10 +285,11 @@ export const fill = R.curry(
 /*
  * Check if each cell in a matrix is equal to a certain value
  *
- * equal(1, [[1,1],[1,1]])
+ * equal(1, [[1,1],[1,1]]);
  * true
  */
-export const equal = R.curry(
+export const equal = R.curryN(
+	2,
 	(
 		value: number,
 		matrix: number[][],
@@ -281,6 +300,8 @@ export const equal = R.curry(
 			),
 			matrix,
 		),
+);
+
 /*
 * Check if a matrix is an identity matrix
 *
@@ -288,13 +309,13 @@ export const equal = R.curry(
 * true
 * */
 export const isIdentity = R.curryN(
-  1,
-  (matrix: number[][]) =>
-    matrix.every((row, rowIndex) =>
-      row.every((cell, cellIndex) =>
-        cell === Number(cellIndex === rowIndex),
-      ),
-    ),
+	1,
+	(matrix: number[][]) =>
+		matrix.every((row, rowIndex) =>
+			row.every((cell, cellIndex) =>
+				cell === Number(cellIndex === rowIndex),
+			),
+		),
 );
 
 /*
@@ -304,42 +325,52 @@ export const isIdentity = R.curryN(
 * [[1,0],[0,1]]
 * */
 export const identity = R.curryN(
-  1,
-  (size: Dimensions):(0|1)[] =>
-    R.addIndex<0, (0|1)[]>(R.map)(
-      (_, rowIndex, array) =>
-        R.set<(0|1)[], (0|1)>(
-          R.lensIndex(rowIndex),
-          1,
-          array as 0[],
-        ),
-      Array(size.rows).fill(0),
-    )
+	1,
+	(size: Dimensions):(0|1)[] =>
+		R.addIndex<0, (0|1)[]>(R.map)(
+			(_, rowIndex, array) =>
+				R.set<(0|1)[], (0|1)>(
+					R.lensIndex(rowIndex),
+					1,
+					array as 0[],
+				),
+			Array(size.rows).fill(0),
+		)
 );
 
 
 /*
  * Generate matrices of size: {rows, cols}, with each cell in
- * range: {min, max} and call `callback` with each matrix
+ * range: {min, max (excluding)} and call `callback` with each matrix
+ *
+ * traverse({min: 0, max: 1}, {rows: 1, cols: 2}, console.log);
  */
-export const traverse = R.curry(
+export const traverse = R.curryN(
+	3,
 	(
 		range: Range,
 		size: Dimensions,
-		callback: (matrix: number[][]) => unknown,
-		inlineMatrix: number[] = [],
-	): void => void (
-		inlineMatrix.length === size.rows * size.cols ?
-			callback(array2matrix(size.rows, inlineMatrix)) :
-			R.addIndex(R.map)(
-				(_, index) =>
-					traverse(
-						range,
-						size,
-						callback,
-						[...inlineMatrix, range.min + index],
-					),
-				Array(range.max - range.min),
-			)
-	),
+		callback: (matrix: number[][]) => void,
+	) =>
+		traverseRecursive(range, size, callback, []),
+);
+
+const traverseRecursive = (
+	range: Range,
+	size: Dimensions,
+	callback: (matrix: number[][]) => void,
+	inlineMatrix: number[],
+): void => void (
+	inlineMatrix.length === size.rows * size.cols ?
+		callback(array2matrix(size.rows, inlineMatrix)) :
+		R.addIndex<undefined, void>(R.map)(
+			(_, index) =>
+				traverseRecursive(
+					range,
+					size,
+					callback,
+					[...inlineMatrix, range.min + index],
+				),
+			Array(range.max - range.min),
+		)
 );
