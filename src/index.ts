@@ -135,15 +135,6 @@ export const col = R.curryN(
 
 
 /*
- * Turn a single column matrix into a 1d array
- *
- * rotate([[1],[2],[3]]);
- * [1,2,3]
- */
-export const rotate = R.map(R.head);
-
-
-/*
  * Get product of multiplying a matrix by a col
  *
  * matrixByVector([1,2],[[1,2],[3,4]]);
