@@ -334,16 +334,16 @@ export const isIdentity = R.curryN(
 * */
 export const identity = R.curryN(
   1,
-  (size: Dimensions):(0|1)[] =>
-    R.addIndex<0, (0|1)[]>(R.map)(
+  (size: Dimensions): (0 | 1)[] =>
+    R.addIndex<0, (0 | 1)[]>(R.map)(
       (_, rowIndex, array) =>
-        R.set<(0|1)[], (0|1)>(
+        R.set<(0 | 1)[], (0 | 1)>(
           R.lensIndex(rowIndex),
           1,
           array as 0[],
         ),
       Array(size.rows).fill(0),
-    )
+    ),
 );
 
 
