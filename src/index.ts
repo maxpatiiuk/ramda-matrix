@@ -90,17 +90,17 @@ export const diff = R.curryN(
     matrix: number[][],
     matrix2: number[][],
   ): number[][] =>
-    sum(matrix, prod(-1, matrix2)),
+    sum(matrix, matrixByScalar(-1, matrix2)),
 );
 
 
 /*
  * Multiply matrix by a number
  *
- * prod(2, [[1,2]]);
+ * matrixByScalar(2, [[1,2]]);
  * [[2,4]]
  */
-export const prod = R.curryN(
+export const matrixByScalar = R.curryN(
   2,
   (
     value: number,
@@ -146,10 +146,10 @@ export const rotate = R.map(R.head);
 /*
  * Get product of multiplying a matrix by a col
  *
- * colProd([1,2],[[1,2],[3,4]]);
+ * matrixByVector([1,2],[[1,2],[3,4]]);
  * [5, 11]
  */
-export const colProd = R.curryN(
+export const matrixByVector = R.curryN(
   2,
   (
     col: number[],
@@ -178,12 +178,13 @@ export const transpose = R.transpose;
 
 
 /*
- * Multiply two matrices
+ * Multiply two matrices.
+ * NOTE: second matrix is going to be multiplied by the first
  *
- * multiply([[1,2],[2,1]], [[0,1],[1,0]);
+ * matrixByMatrix([[1,2],[2,1]], [[0,1],[1,0]);
  * [[1,2],[2,1]]
  */
-export const multiply = R.curryN(
+export const matrixByMatrix = R.curryN(
   2,
   (
     matrix2: number[][],
@@ -191,7 +192,7 @@ export const multiply = R.curryN(
   ) => R.transpose(
     R.map(
       (column) =>
-        colProd(column)(matrix),
+        matrixByVector(column)(matrix),
       R.transpose(matrix2),
     ),
   ),
@@ -234,7 +235,7 @@ export const adj = R.curryN(
 export const inverse = R.curryN(
   1,
   (matrix: number[][]): number[][] =>
-    prod(
+    matrixByScalar(
       det(matrix),
       adj(matrix),
     ),
