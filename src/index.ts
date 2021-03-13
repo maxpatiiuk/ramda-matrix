@@ -17,18 +17,34 @@ export interface Range {
  * Turn string into a matrix
  *
  * parse`
- *   1 2 3
- *  -1 2 3
+ *   1 2/3 3
+ *  -1 2   3
  * `;
- * [[1,2,3],[-1,2,3]]
+ * [[1,0.66666667,3],[-1,2,3]]
  */
 export const parse = R.compose(
   R.map(
     R.compose(
-      R.map(parseInt),
+      R.map(
+        R.ifElse(
+          (cell) => R.equals(
+            -1,
+            R.indexOf(
+              '/',
+              cell,
+            ),
+          ),
+          parseFloat,
+          R.compose(
+            R.apply(R.divide),
+            R.slice(1, 3),
+            R.match(/([-.\d]+)\/([-.\d]+)/),
+          ),
+        ),
+      ),
       R.split(' '),
       // strip odd characters
-      R.replace(/[^\d. -]/g, ''),
+      R.replace(/[^\d/. -]/g, ''),
       // remove extra whitespace
       R.replace(/\s+/g, ' '),
     ),
