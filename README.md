@@ -56,6 +56,15 @@ Status indicators:
 * (`b`) signifies a breaking change
 * (`i`) signifies change of behaviour for existing functions
 
+### 1.1.2 [Hot-Fix]
+* Fix a bug with `parse` returning NaN when line contains whitespaces
+  at the beginning (`i`)
+
+### 1.1.1
+* Add a `markowChain` function
+* Add a `rotationMatrix` function
+* Improve documentation
+
 ### 1.1.0
 * Make `parse` support floating-point numbers and fractions (`i`)
 * Improve documentation
@@ -70,6 +79,6 @@ Status indicators:
 * Make `det` work with any matrix
 * Add a `rref` function
 * Add an `inverse` function
-* Add the `rotate` function
-* Add the `reflect` function?
+* Add a `rotate` function
+* Add a `reflect` function?
 * Make `identity` accept single argument

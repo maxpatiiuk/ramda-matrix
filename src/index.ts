@@ -47,6 +47,7 @@ export const parse = R.compose(
       R.replace(/[^\d/. -]/g, ''),
       // remove extra whitespace
       R.replace(/\s+/g, ' '),
+      R.trim,
     ),
   ),
   R.split('\n'),
@@ -382,3 +383,59 @@ const traverseRecursive = (
       Array(range.max - range.min),
     )
 );
+
+/*
+ * Get a state of a Markov chain of length `length`, initial state of
+ * `currentState` and state probabilities of `probabilities`
+ *
+ * markovChain(
+ *   M.parse`
+ *     0.5 0
+ *     0.5 1
+ *   `,
+ *   3,
+ *   M.parse`
+ *     1
+ *     0
+ *   `
+ * );
+ * [ 0.125, 0.875 ] 
+ * */
+export const markovChain = R.curryN(3, (
+  probabilities: number[][],
+  length: number,
+  currentState: number[],
+): number[] =>
+  length === 0 ?
+    currentState :
+    markovChain(
+      probabilities,
+      length - 1,
+      matrixByVector(
+        currentState,
+        probabilities,
+      ),
+    ));
+
+/*
+ * Create a matrix that, when used as a first parameter in
+ * M.matrixByMatrix, rotates the matrix by a specified angle.
+ *
+ * NOTE: the value of PI in JavaScript is assigned to the `Math.PI`
+ * constant
+ *
+ * NOTE: Math.sin(Math.PI) and other sin/con values that are supposed
+ * to return 0, are defined as 1.2246467991473532e-16 in most
+ * JavaScript engines, including V8. You can solve this by rounding
+ * each cell, like: `parseInt(cell.toFixed("3"))
+ *
+ * rotationMatrix(5/3*Math.PI);
+ * [[0.5…, 0.86…],[-0.86…,0.5…]]
+ *
+ * */
+export const rotationMatrix = R.curryN(1, (
+  angle: number,
+): number[][] => [
+  [Math.cos(angle), -Math.sin(angle)],
+  [Math.sin(angle), Math.cos(angle)],
+]);
