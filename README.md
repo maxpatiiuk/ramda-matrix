@@ -1,6 +1,27 @@
 # Ramda Matrices
 Ramda-based library for working with matrices in JavaScript
 
+# How to use
+Install this package:
+```bash
+npm i ramda-matrix
+```
+
+Import the library into your script:
+```js
+import * as M from 'ramda-matrix';
+```
+
+Start hacking!
+```js
+const A = M.parse`
+   1 2/3 3
+  -1 2   3
+`;
+
+console.table(M.matrixByMatrix(A,A));
+```
+
 ## Documentation
 Documentation is located in `src/index.ts`
 
@@ -9,7 +30,7 @@ Documentation is located in `src/index.ts`
 * Purely functional
 * Every function is curried
 * Tiny bundle size
-* Support for most common mathematical functions and utilities:
+* Support for most common linear algebra functions and utilities:
   - parse a matrix from a string (`parse`)
   - add/subtract two matrices (`sum`, `diff`)
   - transpose (`transpose`)
@@ -20,12 +41,13 @@ Documentation is located in `src/index.ts`
   
 NOTE: you can print any matrix by calling `console.table`:
 ```js
-const A = parse`
-   1 2/3 3
-  -1 2   3
-`;
 console.table(A);
-  
+```
+
+NOTE: JavaScript is infamous for floating point rounding errors.
+Most of them can be metigated by rounding each cell, like this:
+```js
+parseInt(cell.toFixed("3"))
 ```
 
 ## Changelog
@@ -38,7 +60,16 @@ Status indicators:
 * Make `parse` support floating-point numbers and fractions (`i`)
 * Improve documentation
 * Make function names more consistent (`b`)
-* Remove `rotate` function ** (`b`)
+* Remove `rotate` function (`b`)
 
 ### 1.0.4
 * Initial release
+
+## TODO
+* Add functions for elementary matrix operations
+* Make `det` work with any matrix
+* Add a `rref` function
+* Add an `inverse` function
+* Add the `rotate` function
+* Add the `reflect` function?
+* Make `identity` accept single argument
