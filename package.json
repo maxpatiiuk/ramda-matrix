@@ -32,9 +32,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maxxxxxdlp/ramda-matrixes"
+    "url": "git+https://github.com/maxxxxxdlp/ramda-matrix"
   },
-  "homepage": "https://github.com/maxxxxxdlp/TTS_King/#readme",
+  "homepage": "https://github.com/maxxxxxdlp/ramda-matrix/#readme",
   "bugs": {
     "url": "https://github.com/maxxxxxdlp/ramda-matrix/issues"
   }
