@@ -32,10 +32,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maxxxxxdlp/ramda-matrix"
+    "url": "git+https://github.com/maxpatiiuk/ramda-matrix"
   },
-  "homepage": "https://github.com/maxxxxxdlp/ramda-matrix/#readme",
+  "homepage": "https://github.com/maxpatiiuk/ramda-matrix/#readme",
   "bugs": {
-    "url": "https://github.com/maxxxxxdlp/ramda-matrix/issues"
+    "url": "https://github.com/maxpatiiuk/ramda-matrix/issues"
   }
 }
