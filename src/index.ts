@@ -30,21 +30,21 @@ export const parse = R.compose(
             R.apply(R.divide) as (inputs: number[]) => number,
             R.map(parseFloat),
             R.slice(1, 3),
-            R.match(/([-.\d]+)\/([-.\d]+)/)
-          )
-        )
+            R.match(/([-.\d]+)\/([-.\d]+)/),
+          ),
+        ),
       ),
       R.split(' '),
       // strip odd characters
       R.replace(/[^\d/. -]/g, ''),
       // remove extra whitespace
       R.replace(/\s+/g, ' '),
-      R.trim
-    )
+      R.trim,
+    ),
   ),
   R.split('\n'),
   R.trim,
-  R.head
+  R.head,
 );
 
 /*
@@ -72,7 +72,7 @@ export const sum = R.compose(R.map(R.map(R.sum)), zip);
 export const diff = R.curryN(
   2,
   (matrix: number[][], matrix2: number[][]): number[][] =>
-    sum(matrix, matrixByScalar(-1, matrix2))
+    sum(matrix, matrixByScalar(-1, matrix2)),
 );
 
 /*
@@ -82,7 +82,7 @@ export const diff = R.curryN(
  * [[2,4]]
  */
 export const matrixByScalar = R.curryN(2, (value: number, matrix: number[][]) =>
-  R.map(R.map(R.multiply(value)), matrix)
+  R.map(R.map(R.multiply(value)), matrix),
 );
 
 /*
@@ -92,7 +92,7 @@ export const matrixByScalar = R.curryN(2, (value: number, matrix: number[][]) =>
  * [1, 3]
  */
 export const col = R.curryN(2, (col: number, matrix: number[][]): number[] =>
-  R.view(R.lensIndex(col), R.transpose(matrix))
+  R.view(R.lensIndex(col), R.transpose(matrix)),
 );
 
 /*
@@ -107,11 +107,11 @@ export const matrixByVector = R.curryN(2, (col: number[], matrix: number[][]) =>
       R.sum(
         R.addIndex<number, number>(R.map)(
           (value, index) => R.multiply(value, col[index]),
-          column
-        )
+          column,
+        ),
       ),
-    matrix
-  )
+    matrix,
+  ),
 );
 
 /*
@@ -133,8 +133,8 @@ export const matrixByMatrix = R.curryN(
   2,
   (matrix2: number[][], matrix: number[][]) =>
     R.transpose(
-      R.map((column) => matrixByVector(column)(matrix), R.transpose(matrix2))
-    )
+      R.map((column) => matrixByVector(column)(matrix), R.transpose(matrix2)),
+    ),
 );
 
 /*
@@ -146,7 +146,7 @@ export const matrixByMatrix = R.curryN(
 export const det = R.curryN(
   1,
   (matrix: number[][]) =>
-    matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0],
 );
 
 /*
@@ -166,7 +166,7 @@ export const adj = R.curryN(1, (matrix: number[][]) => [
  * [[-3,6],[6,-3]]
  */
 export const inverse = R.curryN(1, (matrix: number[][]): number[][] =>
-  matrixByScalar(det(matrix), adj(matrix))
+  matrixByScalar(det(matrix), adj(matrix)),
 );
 
 /*
@@ -178,7 +178,7 @@ export const inverse = R.curryN(1, (matrix: number[][]): number[][] =>
 export const areIdentical = R.curryN(
   2,
   (matrix: number[][], matrix2: number[][]): boolean =>
-    R.eqBy(JSON.stringify, matrix, matrix2)
+    R.eqBy(JSON.stringify, matrix, matrix2),
 );
 
 /*
@@ -192,8 +192,8 @@ export const array2matrix = R.curryN(
   (cols: number, arr: number[]): number[][] =>
     R.addIndex<number, number[]>(R.map)(
       (_, i) => arr.slice(i * cols, i * cols + cols),
-      Array(Math.ceil(R.divide(R.length(arr), cols)))
-    )
+      Array(Math.ceil(R.divide(R.length(arr), cols))),
+    ),
 );
 
 /*
@@ -203,7 +203,7 @@ export const array2matrix = R.curryN(
  * [[2,2],[2,2]]
  */
 export const fill = R.curryN(2, (size: Dimensions, value: number): number[][] =>
-  Array<number[]>(size.rows).fill(Array<number>(size.cols).fill(value))
+  Array<number[]>(size.rows).fill(Array<number>(size.cols).fill(value)),
 );
 
 /*
@@ -213,7 +213,7 @@ export const fill = R.curryN(2, (size: Dimensions, value: number): number[][] =>
  * true
  */
 export const equal = R.curryN(2, (value: number, matrix: number[][]): boolean =>
-  R.all(R.all(R.equals(value)), matrix)
+  R.all(R.all(R.equals(value)), matrix),
 );
 
 /*
@@ -224,8 +224,8 @@ export const equal = R.curryN(2, (value: number, matrix: number[][]): boolean =>
  * */
 export const isIdentity = R.curryN(1, (matrix: number[][]) =>
   matrix.every((row, rowIndex) =>
-    row.every((cell, cellIndex) => cell === Number(cellIndex === rowIndex))
-  )
+    row.every((cell, cellIndex) => cell === Number(cellIndex === rowIndex)),
+  ),
 );
 
 /*
@@ -238,8 +238,8 @@ export const identity = R.curryN(1, (size: Dimensions): (0 | 1)[] =>
   R.addIndex<0, (0 | 1)[]>(R.map)(
     (_, rowIndex, array) =>
       R.set<(0 | 1)[], 0 | 1>(R.lensIndex(rowIndex), 1, array as 0[]),
-    Array(size.rows).fill(0)
-  )
+    Array(size.rows).fill(0),
+  ),
 );
 
 /*
@@ -251,14 +251,14 @@ export const identity = R.curryN(1, (size: Dimensions): (0 | 1)[] =>
 export const traverse = R.curryN(
   3,
   (range: Range, size: Dimensions, callback: (matrix: number[][]) => void) =>
-    traverseRecursive(range, size, callback, [])
+    traverseRecursive(range, size, callback, []),
 );
 
 const traverseRecursive = (
   range: Range,
   size: Dimensions,
   callback: (matrix: number[][]) => void,
-  inlineMatrix: number[]
+  inlineMatrix: number[],
 ): void =>
   void (inlineMatrix.length === size.rows * size.cols
     ? callback(array2matrix(size.rows, inlineMatrix))
@@ -268,7 +268,7 @@ const traverseRecursive = (
             ...inlineMatrix,
             range.min + index,
           ]),
-        Array(range.max - range.min)
+        Array(range.max - range.min),
       ));
 
 /*
@@ -293,15 +293,15 @@ export const markovChain = R.curryN(
   (
     probabilities: number[][],
     length: number,
-    currentState: number[]
+    currentState: number[],
   ): number[] =>
     length === 0
       ? currentState
       : markovChain(
           probabilities,
           length - 1,
-          matrixByVector(currentState, probabilities)
-        )
+          matrixByVector(currentState, probabilities),
+        ),
 );
 
 /*

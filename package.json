@@ -31,18 +31,21 @@
   },
   "scripts": {
     "build": "tsup",
-    "watch": "tsup --watch",
     "lint": "eslint --fix . && prettier --write .",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint"
+    "prepublishOnly": "npm run lint",
+    "watch": "tsup --watch"
   },
   "peerDependencies": {
     "ramda": "^0.27.1"
   },
   "devDependencies": {
+    "@maxpatiiuk/prettier-config": "^2.0.0",
     "@types/ramda": "^0.30.0",
     "eslint": "^9.5.0",
+    "prettier": "^3.3.2",
     "tsup": "^8.1.0",
     "typescript": "^5.5.2"
-  }
+  },
+  "prettier": "@maxpatiiuk/prettier-config"
 }
